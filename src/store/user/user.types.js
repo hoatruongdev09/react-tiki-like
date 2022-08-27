@@ -1,0 +1,6 @@
+const USER_TYPES = {
+    SET_USER_DATA: 'SET_USER_DATA',
+    CLEAR_USER_DATA: 'CLEAR_USER_DATA'
+}
+
+export default USER_TYPES
