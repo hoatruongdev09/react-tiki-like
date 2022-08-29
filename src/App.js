@@ -14,7 +14,9 @@ import { setUserData } from './store/user/user.action'
 import './App.scss';
 import { setAuthorize } from './store/general/general.action';
 import Customer from './routes/customer/customer.component';
-import UserDetail from './components/user-detail/user-detail.component';
+import CustomerOverview from './components/customer/customer-overview.component';
+import CustomerDetail from './components/customer/customer-detail.component';
+import CustomerAddresses from './components/customer/customer-addresses.component';
 
 function App() {
   const accessToken = useSelector(selectAccessToken)
@@ -29,7 +31,7 @@ function App() {
       dispatch(setAuthorize(false))
       return
     }
-    var url = `${BASE_URL}${API_ENDPOINTS.AUTH}`
+    var url = `${BASE_URL}${API_ENDPOINTS.CUSTOMER_AUTH}`
     fetch(url, {
       method: 'get',
       headers: {
@@ -58,7 +60,9 @@ function App() {
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<SignUp />} />
         <Route path='customer' element={<Customer />}>
-          <Route index element={<UserDetail />} />
+          <Route index element={<CustomerOverview />} />
+          <Route path='settings' element={<CustomerDetail />} />
+          <Route path='addresses' element={<CustomerAddresses />} />
         </Route>
       </Route>
     </Routes>

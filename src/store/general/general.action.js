@@ -17,3 +17,7 @@ export const setAuthorize = (authorized) => {
 export const clearAuthorization = () => {
     return createAction(GENERAL_TYPES.CLEAR_AUTHORIZATION, null)
 }
+
+export const setSelectedCustomerTab = (index) => {
+    return createAction(GENERAL_TYPES.SET_SELECTED_CUSTOMER_TAB, index)
+}

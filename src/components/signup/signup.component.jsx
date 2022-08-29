@@ -61,7 +61,7 @@ const SignUp = () => {
 
     const handleOnSubmit = (e) => {
         e.preventDefault()
-        var url = `${BASE_URL}${API_ENDPOINTS.REGISTER}`
+        var url = `${BASE_URL}${API_ENDPOINTS.CUSTOMER_REGISTER}`
 
         const { email, password, repeatPassword, firstName, lastName, gender } = registerForm
 

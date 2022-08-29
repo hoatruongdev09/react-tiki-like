@@ -31,7 +31,7 @@ const NavBarUser = () => {
                             {
                                 authorized ?
                                     <span className="nav-link">
-                                        Hi {firstName} {lastName}, <Link onClick={e => handleLogout(e)} to=""> Logout </Link>
+                                        Hi <Link to='customer'>{firstName} {lastName}</Link>, <Link onClick={e => handleLogout(e)} to=""> Logout </Link>
                                     </span> :
 
                                     <span className="nav-link">

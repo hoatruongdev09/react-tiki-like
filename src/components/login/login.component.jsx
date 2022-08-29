@@ -47,7 +47,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const url = `${BASE_URL}${API_ENDPOINTS.LOGIN}`
+        const url = `${BASE_URL}${API_ENDPOINTS.CUSTOMER_LOGIN}`
         const { email, password, remember } = loginForm
         fetch(url, {
             headers: {

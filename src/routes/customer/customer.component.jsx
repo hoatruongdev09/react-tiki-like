@@ -1,17 +1,58 @@
-import { Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { selectAccessToken } from '../../store/general/general.selector'
+import { setUserData } from '../../store/user/user.action'
+
 import UserSideBar from '../../components/user/user-side-bar/user-side-bar.component'
 import UserTitleBar from '../../components/user/user-title-bar/user-title-bar.component'
+
+import { BASE_URL, API_ENDPOINTS, generateHeaders } from '../../utils/api-requesting/api-requesting.util'
+
 const Customer = () => {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const token = useSelector(selectAccessToken)
+
+    useEffect(() => {
+        if (token) {
+            fetchAuth(token)
+        } else {
+            navigate('/login', { replace: true })
+        }
+    }, [token, dispatch])
+
+    const fetchAuth = (token) => {
+        const url = `${BASE_URL}${API_ENDPOINTS.CUSTOMER_AUTH}`
+        const headers = generateHeaders(token)
+        fetch(url, {
+            headers: headers
+        }).then(res => {
+            if (res.status == 200) {
+                res.json().then(data => {
+                    console.log(data)
+                    dispatch(setUserData(data))
+                })
+            } else if (res.status == 403) {
+                navigate('/login', { replace: true })
+            }
+        }).catch(err => {
+
+            console.error(err)
+        })
+    }
+
     return (
         <>
             <UserTitleBar />
 
-            <section class="section-content padding-y">
-                <div class="container">
+            <section className="section-content padding-y">
+                <div className="container">
 
-                    <div class="row">
+                    <div className="row">
                         <UserSideBar />
-                        <main class="col-md-9">
+                        <main className="col-md-9">
                             <Outlet />
                         </main>
                     </div>

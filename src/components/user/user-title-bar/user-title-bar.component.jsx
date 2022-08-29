@@ -1,8 +1,8 @@
 const UserTitleBar = () => {
     return (
-        <section class="section-pagetop bg-gray">
-            <div class="container">
-                <h2 class="title-page">My account</h2>
+        <section className="section-pagetop bg-gray">
+            <div className="container">
+                <h2 className="title-page">My account</h2>
             </div>
         </section>
     )

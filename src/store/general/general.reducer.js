@@ -4,7 +4,8 @@ import GENERAL_TYPES from './general.types'
 const INIT_STATE = {
     showNavBar: true,
     accessToken: getDataFromLocalStorage(STORAGE_KEYS.ACCESS_TOKEN) || '',
-    authorized: false
+    authorized: false,
+    customerSelectedTab: 0
 }
 
 export const generalReducer = (state = INIT_STATE, action) => {
@@ -31,6 +32,11 @@ export const generalReducer = (state = INIT_STATE, action) => {
                 ...state,
                 authorized: false,
                 accessToken: ''
+            }
+        case GENERAL_TYPES.SET_SELECTED_CUSTOMER_TAB:
+            return {
+                ...state,
+                customerSelectedTab: payload
             }
         default:
             return state
