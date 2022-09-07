@@ -17,6 +17,8 @@ import Customer from './routes/customer/customer.component';
 import CustomerOverview from './components/customer/customer-overview.component';
 import CustomerDetail from './components/customer/customer-detail.component';
 import CustomerAddresses from './components/customer/customer-addresses.component';
+import IndexPage from './components/index-page/index-page.component'
+import ProductDetail from './components/product-detail/product-detail.component';
 
 function App() {
   const accessToken = useSelector(selectAccessToken)
@@ -57,6 +59,8 @@ function App() {
   return (
     <Routes>
       <Route path='/' element={<NavigationBar />}>
+        <Route index element={<IndexPage />} />
+        <Route path='product-detail/:id' element={<ProductDetail />} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<SignUp />} />
         <Route path='customer' element={<Customer />}>

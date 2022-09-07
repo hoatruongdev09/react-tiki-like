@@ -12,6 +12,11 @@ export const API_ENDPOINTS = {
     POST_CREATE_CUSTOMER_ADDRESS: '/user/add-address',
     POST_DELETE_CUSTOMER_ADDRESS: '/user/delete-address/', //delete-address/:id
     POST_SET_CUSTOMER_DEFAULT_ADDRESS: '/user/set-default-address/', //set-default-address/:id
+    POST_UPDATE_ADDRESS: '/user/update-address/',//update-address/:
+    GET_CUSTOMER_DEFAULT_ADDRESS: '/user/default-address',
+    GET_PRODUCTS: '/product/',
+    GET_PRODUCT_DETAIL: '/product/detail/', //product/detail/:id
+    GET_CATEGORY_TREE: '/category/tree/', //category/tree/:id
 }
 
 export const generateHeaders = (token) => {

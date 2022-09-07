@@ -1,4 +1,4 @@
-import { ReactComponent } from '../../assets/logo.svg'
+import { ReactComponent } from '../../assets/images/logo.svg'
 import { Link } from 'react-router-dom'
 const SearchBar = () => {
     return (

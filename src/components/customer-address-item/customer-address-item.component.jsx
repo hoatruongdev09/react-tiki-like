@@ -1,23 +1,26 @@
 import { useState } from 'react'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
-
+import Badge from 'react-bootstrap/Badge';
 const CustomerAddressItem = ({ address, onEditClicked, onMakeDefaultClick, onDeleteClicked }) => {
     const [showToolTip, setShowToolTip] = useState(false)
 
-
-
     return (
-        <div className="col-md-6" key={address.id}>
-            <article className="box mb-4">
-                <h6>{address.ward}, {address.city}, {address.country}</h6>
-                <p>{address.address}</p>
+        <div className={`col-md-6`} key={address.id}>
+            <article className={`box mb-4 ${address.defaultAddress ? 'bg-light' : ''}`}>
+                <Badge bg="info" text="dark" style={{ float: 'right' }}>
+                    {address.address_type ? 'Home' : 'Work'}
+                </Badge>
+                <h6>Name: {address.firstName} {address.lastName}
+                </h6>
+                <h6>Phone: {address.phone}</h6>
+                <p>{address.city} {address.country} <br /> {address.address}</p>
                 {
-                    address.default_address ?
-                        <button className="btn btn-light disabled mr-2">
-                            <i className="fa fa-check"></i> Default
+                    address.defaultAddress ?
+                        <button className="btn btn-primary disabled mr-2">
+                            <i className="fa fa-check text-light"></i> Default
                         </button> :
-                        <button onClick={e => onMakeDefaultClick(address)} className="btn btn-light mr-2">Make default</button>
+                        <button onClick={e => onMakeDefaultClick(address)} className="btn btn-light mr-2">Set default</button>
                 }
 
                 <button onClick={e => onEditClicked(address)} className="btn btn-light mr-2">
@@ -41,9 +44,13 @@ const CustomerAddressItem = ({ address, onEditClicked, onMakeDefaultClick, onDel
                         </Popover>
                     }
                 >
-                    <button onClick={e => setShowToolTip(true)} className="btn btn-light mr-2">
-                        <i className="text-danger fa fa-trash"></i>
-                    </button>
+                    {
+                        address.defaultAddress ? <></> :
+                            <button onClick={e => setShowToolTip(true)} className="btn btn-light" style={{ float: 'right' }}>
+                                <i className="text-danger fa fa-trash"></i>
+                            </button>
+                    }
+
                 </OverlayTrigger>
 
             </article>

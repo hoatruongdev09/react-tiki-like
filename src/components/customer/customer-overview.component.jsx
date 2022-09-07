@@ -1,12 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { selectUserData } from '../../store/user/user.selector'
 import { setSelectedCustomerTab } from '../../store/general/general.action'
-
+import { selectAccessToken } from '../../store/general/general.selector'
+import { BASE_URL, API_ENDPOINTS, generateHeaders } from '../../utils/api-requesting/api-requesting.util'
 const CustomerOverview = () => {
     const dispatch = useDispatch()
     const userInfo = useSelector(selectUserData)
+    const token = useSelector(selectAccessToken)
+    const [defaultAddress, setDefaultAddress] = useState(null)
     const { firstName, lastName, gender, email, avatar } = userInfo
+
+    React.useEffect(() => {
+        const url = `${BASE_URL}${API_ENDPOINTS.GET_CUSTOMER_DEFAULT_ADDRESS}`
+        fetch(url, {
+            method: 'GET',
+            headers: generateHeaders(token)
+        }).then(res => {
+            if (res.status == 200) {
+                res.json().then(data => {
+                    setDefaultAddress(data)
+                })
+            }
+        }).catch(err => {
+            console.error(err)
+        })
+    }, [token])
 
     React.useEffect(() => {
         dispatch(setSelectedCustomerTab(0))
@@ -28,12 +47,21 @@ const CustomerOverview = () => {
                         </div>
                     </figure>
                     <hr />
-                    <p>
+                    {
+                        defaultAddress == null ? <></> :
+                            <p>
+                                <i className="fa fa-map-marker text-muted"></i> My address: {defaultAddress.firstName} {defaultAddress.lastName} | {defaultAddress.phone}
+                                <br />
+                                {defaultAddress.city} city, {defaultAddress.ward} ward, {defaultAddress.address}
+                                {/* <a href="#" className="btn-link"> Edit</a> */}
+                            </p>
+                    }
+                    {/* <p>
                         <i className="fa fa-map-marker text-muted"></i> &nbsp; My address:
                         <br />
                         Tashkent city, Street name, Building 123, House 321 &nbsp
                         <a href="#" className="btn-link"> Edit</a>
-                    </p>
+                    </p> */}
 
 
 

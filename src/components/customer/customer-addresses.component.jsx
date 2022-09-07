@@ -3,15 +3,18 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectAccessToken } from '../../store/general/general.selector'
 import { setSelectedCustomerTab } from '../../store/general/general.action'
 import { API_ENDPOINTS, BASE_URL, generateHeaders } from '../../utils/api-requesting/api-requesting.util'
-import Modal from 'react-bootstrap/Modal';
-import CustomerAddressItem from '../customer-address-item/customer-address-item.component'
 
+import CustomerAddressItem from '../customer-address-item/customer-address-item.component'
+import CustomerCreateAddressModal from '../customer-create-address-modal/customer-create-address-model.component'
+import CustomerEditAddressModal from '../customer-address-edit-modal/customer-address-edit-modal.component'
 
 const CustomerAddresses = () => {
     const dispatch = useDispatch()
     const token = useSelector(selectAccessToken)
     const [addresses, setAddresses] = useState([])
-    const [modalShow, setModalShow] = useState(false);
+    const [showCreateAddressModal, setShowCreateAddressModal] = useState(false);
+    const [showEditAddressModal, setShowEditAddressModal] = useState(false);
+    const [editingAddressData, setEditingAddressData] = useState(null)
     const [fetchingData, setFetchingData] = useState(true)
 
 
@@ -60,6 +63,36 @@ const CustomerAddresses = () => {
         })
     }
 
+    const onPostEditAddress = (body, onSuccess, onFail) => {
+        const { id, firstName, lastName, phone, country, city, ward, address, address_type, defaultAddress } = body
+        const url = `${BASE_URL}${API_ENDPOINTS.POST_UPDATE_ADDRESS}${id}`
+        const data = { firstName, lastName, phone, country, city, ward, address, address_type, defaultAddress }
+        fetch(url, {
+            method: 'POST',
+            headers: generateHeaders(token),
+            body: JSON.stringify(data)
+        }).then(res => {
+            if (res.status == 200) {
+                res.json().then(resData => {
+                    onSuccess()
+                    fetchAddresses(token)
+                })
+            } else {
+                onFail('normal', res)
+            }
+        }).catch(err => {
+            onFail('internal', err)
+        })
+    }
+    const handleChangeEditingAddress = (e) => {
+        const { name, value } = e.target
+        console.log(`${name}  ${value}`)
+        setEditingAddressData({
+            ...editingAddressData,
+            [name]: value
+        })
+    }
+
     const onDeleteAddress = (address) => {
         const { id } = address
         const url = `${BASE_URL}${API_ENDPOINTS.POST_DELETE_CUSTOMER_ADDRESS}${id}`
@@ -75,7 +108,8 @@ const CustomerAddresses = () => {
         })
     }
     const onEditAddress = (address) => {
-
+        setEditingAddressData({ ...address })
+        setShowEditAddressModal(true)
     }
     const onMakeAddressDefault = (address) => {
         const { id } = address
@@ -96,12 +130,19 @@ const CustomerAddresses = () => {
 
         fetchingData ? <></> :
             <>
-                <button onClick={e => setModalShow(true)} className="btn btn-light mb-3"> <i className="fa fa-plus"></i> Add new address </button>
+                <button onClick={e => setShowCreateAddressModal(true)} className="btn btn-light mb-3"> <i className="fa fa-plus"></i> Add new address </button>
 
                 <CustomerCreateAddressModal
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
+                    show={showCreateAddressModal}
+                    onHide={() => setShowCreateAddressModal(false)}
                     postCreateAddress={onCreateAddress}
+                />
+                <CustomerEditAddressModal
+                    show={showEditAddressModal}
+                    onHide={() => setShowEditAddressModal(false)}
+                    postEditAddress={onPostEditAddress}
+                    addressShouldEdit={editingAddressData}
+                    handleChangeEditingAddress={e => handleChangeEditingAddress(e)}
                 />
 
                 <div className="row">
@@ -123,143 +164,6 @@ const CustomerAddresses = () => {
 
     )
 
-}
-const defaultCreateAddressForm = {
-    firstName: '',
-    lastName: '',
-    country: '',
-    city: '',
-    ward: '',
-    address: '',
-    phone: '',
-    address_type: 0,
-    use_default: false
-}
-const CustomerCreateAddressModal = (props) => {
-    const [formData, setFormData] = useState(defaultCreateAddressForm)
-    const { firstName, lastName, country, city, ward, address, phone, address_type, use_default } = formData
-
-    const { show, onHide, postCreateAddress } = props
-
-    const handleChangeForm = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const onHideModal = () => {
-        setFormData(defaultCreateAddressForm)
-        onHide()
-    }
-
-    const submitForm = () => {
-        const body = { ...formData }
-        postCreateAddress(body, () => {
-            onHideModal()
-        }, (code, err) => {
-            console.log(err)
-        })
-    }
-
-    const onMakeDefaultClicked = () => {
-        const defaultAddress = formData.use_default
-        setFormData({
-            ...formData,
-            use_default: !defaultAddress
-        })
-    }
-
-    return (
-        <>
-            <Modal
-                show={show}
-                onHide={onHide}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        Add new address
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-
-                    <div className="card-body">
-                        <form>
-                            <div className="form-row">
-                                <div className="col form-group">
-                                    <label>First name</label>
-                                    <input onChange={e => handleChangeForm(e)} name='firstName' type="text" className="form-control" value={firstName} />
-                                </div>
-                                <div className="col form-group">
-                                    <label>Last name</label>
-                                    <input onChange={e => handleChangeForm(e)} name='lastName' type="text" className="form-control" value={lastName} />
-                                </div>
-                                {/* <div class="col form-group">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" value="Michael" />
-                                </div> */}
-                            </div>
-
-                            <div className="form-row">
-                                <div className="form-group col-md-4">
-                                    <label>Country</label>
-                                    <input onChange={e => handleChangeForm(e)} name='country' type="text" className="form-control" value={country} />
-                                    {/* <select id="inputState" class="form-control">
-                                        <option> Choose...</option>
-                                        <option>Uzbekistan</option>
-                                        <option>Russia</option>
-                                        <option selected="">United States</option>
-                                        <option>India</option>
-                                        <option>Afganistan</option>
-                                    </select> */}
-                                </div>
-                                <div className="form-group col-md-4">
-                                    <label>City</label>
-                                    <input onChange={e => handleChangeForm(e)} name='city' type="text" className="form-control" value={city} />
-                                </div>
-                                <div className="form-group col-md-4">
-                                    <label>Ward</label>
-                                    <input onChange={e => handleChangeForm(e)} name='ward' type="text" className="form-control" value={ward} />
-                                </div>
-                            </div>
-
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label>Address</label>
-                                    <input onChange={e => handleChangeForm(e)} name='address' type="text" className="form-control" value={address} />
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label>Phone</label>
-                                    <input onChange={e => handleChangeForm(e)} name='phone' type="number" className="form-control" value={phone} />
-                                </div>
-                            </div>
-                            <div className="form-group">
-                                <label className="custom-control custom-radio custom-control-inline">
-                                    <input className="custom-control-input" defaultChecked type="radio" name="address_type" value={0} onChange={e => handleChangeForm(e)} />
-                                    <span className="custom-control-label"> Home </span>
-                                </label>
-                                <label className="custom-control custom-radio custom-control-inline">
-                                    <input className="custom-control-input" type="radio" name="address_type" value={1} onChange={e => handleChangeForm(e)} />
-                                    <span className="custom-control-label"> Work </span>
-                                </label>
-                            </div>
-                            <div className="form-group">
-                                <button type='button' className={`btn ${use_default ? 'btn-primary' : ''} `} onClick={() => onMakeDefaultClicked()}>Make this default</button>
-                            </div>
-                        </form>
-                    </div>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <button className='btn' onClick={onHideModal}>Cancel</button>
-                    <button className={`btn btn-primary`} onClick={submitForm}>Submit</button>
-                </Modal.Footer>
-            </Modal>
-        </>
-    )
 }
 
 export default CustomerAddresses
