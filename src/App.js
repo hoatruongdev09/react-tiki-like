@@ -19,6 +19,10 @@ import CustomerDetail from './components/customer/customer-detail.component';
 import CustomerAddresses from './components/customer/customer-addresses.component';
 import IndexPage from './components/index-page/index-page.component'
 import ProductDetail from './components/product-detail/product-detail.component';
+import UserCart from './components/user-cart/user-cart.component';
+import CartPayment from './components/cart-payment/cart-payment.component';
+import CustomerMyOrder from './components/customer/customer-my-order.component';
+import CustomerOrderDetail from './components/customer/customer-order-detail.component';
 
 function App() {
   const accessToken = useSelector(selectAccessToken)
@@ -63,10 +67,14 @@ function App() {
         <Route path='product-detail/:id' element={<ProductDetail />} />
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<SignUp />} />
+        <Route path='cart' element={<UserCart />} />
+        <Route path='/cart-payment' element={<CartPayment />} />
         <Route path='customer' element={<Customer />}>
           <Route index element={<CustomerOverview />} />
           <Route path='settings' element={<CustomerDetail />} />
           <Route path='addresses' element={<CustomerAddresses />} />
+          <Route path='my-orders' element={<CustomerMyOrder />} />
+          <Route path='order-detail/:id' element={<CustomerOrderDetail />} />
         </Route>
       </Route>
     </Routes>

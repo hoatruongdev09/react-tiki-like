@@ -21,3 +21,7 @@ export const clearAuthorization = () => {
 export const setSelectedCustomerTab = (index) => {
     return createAction(GENERAL_TYPES.SET_SELECTED_CUSTOMER_TAB, index)
 }
+
+export const setLastRouteBeforeAuth = (url) => {
+    return createAction(GENERAL_TYPES.SET_LAST_ROUTE_BEFORE_AUTH, url)
+}

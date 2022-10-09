@@ -1,15 +1,32 @@
 import { Link } from "react-router-dom"
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+
+import { addItemToCart, saveCart } from '../../store/cart/cart.actions'
 
 
-
-const ProductDetailImage = ({ product }) => {
+const ProductDetailImage = ({ product, images }) => {
+    const dispatch = useDispatch()
     const [amount, setAmount] = useState(1)
-    const { name, displayImageUrl, shortDescription, price, soldCount, stockCount, manufacturerName } = product
+    const [viewingImage, setViewingImages] = useState(0)
+
+    const { id, name, displayImageUrl, shortDescription, price, soldCount, stockCount, manufacturerName } = product
+    const allImages = [displayImageUrl, ... (images.map(img => img.url))]
+
+
 
     const onModifyAmount = (value) => {
         const nextValue = amount + value
         setAmount(nextValue > 1 ? (nextValue <= stockCount ? nextValue : stockCount) : 1)
+    }
+
+    const onSelectViewingImage = (index) => {
+        setViewingImages(index)
+    }
+
+    const addCurrentItemToCart = () => {
+        dispatch(addItemToCart(id, amount))
+        dispatch(saveCart())
     }
 
     return (
@@ -22,23 +39,18 @@ const ProductDetailImage = ({ product }) => {
                                 <div className="img-big-wrap">
                                     <div>
                                         <Link to="">
-                                            <img src={displayImageUrl} />
+                                            <img src={allImages[viewingImage]} />
                                         </Link>
                                     </div>
                                 </div>
                                 <div className="thumbs-wrap">
-                                    <Link to="" className="item-thumb">
-                                        <img src="images/items/15.jpg" />
-                                    </Link>
-                                    <Link to="" className="item-thumb">
-                                        <img src="images/items/15-1.jpg" />
-                                    </Link>
-                                    <Link to="" className="item-thumb">
-                                        <img src="images/items/15-2.jpg" />
-                                    </Link>
-                                    <Link to="" className="item-thumb">
-                                        <img src="images/items/15-1.jpg" />
-                                    </Link>
+                                    {
+                                        allImages.map((img, index) => (
+                                            <Link key={`image-detail-${index}`} onClick={e => onSelectViewingImage(index)} to="" className="item-thumb">
+                                                <img src={img} />
+                                            </Link>
+                                        ))
+                                    }
                                 </div>
                             </article>
                         </div>
@@ -103,7 +115,7 @@ const ProductDetailImage = ({ product }) => {
                                     </div>
                                 </div>
                                 <div className="form-group col-md">
-                                    <button className="btn  btn-primary">
+                                    <button className="btn  btn-primary mr-2" onClick={addCurrentItemToCart}>
                                         <i className="fas fa-shopping-cart"></i> <span className="text">Add to cart</span>
                                     </button>
                                     <button className="btn btn-light">

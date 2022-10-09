@@ -39,7 +39,6 @@ const CustomerDetail = () => {
     const [editingMode, setEditingMode] = useState(false)
 
     useEffect(() => {
-        dispatch(setSelectedCustomerTab(4))
         setFormData(userInfo)
     }, [userInfo, dispatch])
 

@@ -5,8 +5,8 @@ import { setShowNavBar } from '../../store/general/general.action'
 import { BASE_URL, API_ENDPOINTS } from '../../utils/api-requesting/api-requesting.util'
 
 import { saveDataToLocalStorage, STORAGE_KEYS } from '../../utils/local-storage/local-storage.util'
-import { setAccessToken } from '../../store/general/general.action'
-import { selectAuthorized } from '../../store/general/general.selector'
+import { setAccessToken, setLastRouteBeforeAuth } from '../../store/general/general.action'
+import { selectAuthorized, selectLastRouteBeforeAuth } from '../../store/general/general.selector'
 
 
 
@@ -22,23 +22,27 @@ const registerFormDefault = {
 
 
 const SignUp = () => {
-    const [registerForm, setRegisterForm] = useState(registerFormDefault)
-    const authorized = useSelector(selectAuthorized)
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    if (authorized) {
-        navigate('/')
-    }
+    const lastRoute = useSelector(selectLastRouteBeforeAuth)
+    const authorized = useSelector(selectAuthorized)
+
+    const [registerForm, setRegisterForm] = useState(registerFormDefault)
+
 
     useEffect(() => {
-        dispatch(setShowNavBar(false))
+        if (authorized) {
+            navigate('/')
+        } else {
+            dispatch(setShowNavBar(false))
+        }
 
         return () => {
             console.log("on unmount")
             dispatch(setShowNavBar(true))
         }
-    }, [dispatch])
+    }, [authorized, lastRoute, dispatch])
 
     const handleOnChanged = (e) => {
         setRegisterForm({
@@ -86,7 +90,8 @@ const SignUp = () => {
                     res.json().then(data => {
                         dispatch(setAccessToken(data))
                         saveDataToLocalStorage(STORAGE_KEYS.ACCESS_TOKEN, data)
-                        navigate('/')
+                        navigate(lastRoute)
+                        dispatch(setLastRouteBeforeAuth('/'))
                     })
                 }
             })

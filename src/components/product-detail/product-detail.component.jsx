@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Fragment } from 'react'
 
 import ProductDetailImage from "./product-detail-image.component"
 import { BASE_URL, API_ENDPOINTS, generateHeaders } from '../../utils/api-requesting/api-requesting.util'
@@ -10,7 +10,10 @@ import './product-detail.styles.scss'
 const ProductDetail = () => {
     const { id } = useParams()
     const [productData, setProductData] = useState(null)
+    const [productImages, setProductImages] = useState([])
     const [categoryTree, setCategoryTree] = useState([])
+
+
 
     useEffect(() => {
         if (productData) {
@@ -30,7 +33,9 @@ const ProductDetail = () => {
         }).then(res => {
             if (res.status == 200) {
                 res.json().then(data => {
-                    setProductData(data)
+                    const { product, images } = data
+                    setProductData(product)
+                    setProductImages(images)
                 })
             } else {
                 console.log('hey')
@@ -68,11 +73,11 @@ const ProductDetail = () => {
                             {
                                 categoryTree.map((cat, index) => (
                                     index == categoryTree.length - 1 ?
-                                        <>
+                                        <Fragment key={cat.id}>
                                             <li className="breadcrumb-item "><Link className='breadcrumb-modified-item' to="">{cat.name}</Link></li>
                                             <li className="breadcrumb-item  active" aria-current="page">{productData.name}</li>
-                                        </> :
-                                        <li className="breadcrumb-item "><Link className='breadcrumb-modified-item' to="">{cat.name}</Link></li>
+                                        </Fragment> :
+                                        <li key={cat.id} className="breadcrumb-item "><Link className='breadcrumb-modified-item' to="">{cat.name}</Link></li>
                                 ))
                             }
                             {/* <li className="breadcrumb-item "><Link className='breadcrumb-modified-item' to="">Category name</Link></li> */}
@@ -81,7 +86,7 @@ const ProductDetail = () => {
                         </ol>
                     </div>
                 </section>
-                <ProductDetailImage product={productData} />
+                <ProductDetailImage product={productData} images={productImages} />
                 <ProductDetailDescription product={productData} />
             </>
     )

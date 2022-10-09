@@ -5,6 +5,7 @@ const INIT_STATE = {
     showNavBar: true,
     accessToken: getDataFromLocalStorage(STORAGE_KEYS.ACCESS_TOKEN) || '',
     authorized: false,
+    lastRouteBeforeAuth: '/',
     customerSelectedTab: 0
 }
 
@@ -37,6 +38,11 @@ export const generalReducer = (state = INIT_STATE, action) => {
             return {
                 ...state,
                 customerSelectedTab: payload
+            }
+        case GENERAL_TYPES.SET_LAST_ROUTE_BEFORE_AUTH:
+            return {
+                ...state,
+                lastRouteBeforeAuth: payload
             }
         default:
             return state

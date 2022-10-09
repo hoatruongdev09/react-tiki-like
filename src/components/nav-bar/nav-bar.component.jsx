@@ -1,13 +1,45 @@
 import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+
+import { BASE_URL, API_ENDPOINTS } from '../../utils/api-requesting/api-requesting.util'
 
 const MenuBar = () => {
+
+    const [categories, setCategories] = useState([])
+
+
+    useEffect(() => {
+        fetchCategories()
+    }, [])
+
+    const fetchCategories = () => {
+        console.log(`FETCH DATA`)
+        const url = `${BASE_URL}${API_ENDPOINTS.GET_ALL_PARENT_CATEGORIES}`
+        fetch(url, {
+            method: 'GET'
+        }).then(res => {
+            if (res.status == 200) {
+                res.json().then(data => {
+                    console.log('category data: ', data)
+                    setCategories(data)
+                })
+            }
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+
     return (
         <nav className="navbar navbar-main navbar-expand pl-0">
             <ul className="navbar-nav flex-wrap">
-                <li className="nav-item">
-                    <Link className="nav-link" to="#">Home</Link>
-                </li>
-                <li className="nav-item dropdown">
+                {
+                    categories.map(category => (
+                        <li className="nav-item">
+                            <Link className="nav-link" to={`#${category.id}`}>{category.name}</Link>
+                        </li>
+                    ))
+                }
+                {/* <li className="nav-item dropdown">
                     <Link className="nav-link dropdown-toggle" data-toggle="dropdown" to="#"> Demo pages </Link>
                     <div className="dropdown-menu dropdown-large dropdown-large-modified">
                         <nav className="row">
@@ -34,31 +66,7 @@ const MenuBar = () => {
                             </div>
                         </nav>
                     </div>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="#">Electronics</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="#">Fashion</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="#">Beauty</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="#">Motors</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="#">Sports</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="#">Gardening</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="#">Deals</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="nav-link" to="#">Under $10</Link>
-                </li>
+                </li> */}
             </ul>
         </nav>
     )

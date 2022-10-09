@@ -17,6 +17,11 @@ export const API_ENDPOINTS = {
     GET_PRODUCTS: '/product/',
     GET_PRODUCT_DETAIL: '/product/detail/', //product/detail/:id
     GET_CATEGORY_TREE: '/category/tree/', //category/tree/:id
+    GET_ALL_PARENT_CATEGORIES: '/category/get-parent-categories',
+    GET_PRODUCTS_DETAIL: '/product/details?ids=',// 1,2,3
+    POST_PLACE_ORDER: '/order/place-order',
+    GET_USER_ORDERS: '/order/user-orders',
+    GET_ORDER_DETAIL: '/order/detail/' // /order/detail/:id
 }
 
 export const generateHeaders = (token) => {

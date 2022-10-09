@@ -1,16 +1,16 @@
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+
 import { selectUserData } from '../../store/user/user.selector'
 import { selectAuthorized } from '../../store/general/general.selector'
 import { clearUserData } from '../../store/user/user.action'
 import { clearAuthorization } from '../../store/general/general.action'
 
+
 const NavBarUser = () => {
     const dispatch = useDispatch()
     const userData = useSelector(selectUserData)
     const authorized = useSelector(selectAuthorized)
-
-    console.log('authorized: ', authorized)
 
     const { firstName, lastName } = userData
     const handleLogout = (e) => {
@@ -56,7 +56,7 @@ const NavBarUser = () => {
                         </li>
                         <li><Link to="#" className="nav-link"> My shop </Link></li>
                         <li><Link to="#" className="nav-link"> <i className="fa fa-bell"></i> </Link></li>
-                        <li><Link to="#" className="nav-link"> <i className="fa fa-shopping-cart"></i> </Link></li>
+                        <li><Link to="/cart" className="nav-link"> <i className="fa fa-shopping-cart"></i> </Link></li>
                     </ul>
                 </div>
             </div>

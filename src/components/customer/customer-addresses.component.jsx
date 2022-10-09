@@ -9,7 +9,6 @@ import CustomerCreateAddressModal from '../customer-create-address-modal/custome
 import CustomerEditAddressModal from '../customer-address-edit-modal/customer-address-edit-modal.component'
 
 const CustomerAddresses = () => {
-    const dispatch = useDispatch()
     const token = useSelector(selectAccessToken)
     const [addresses, setAddresses] = useState([])
     const [showCreateAddressModal, setShowCreateAddressModal] = useState(false);
@@ -19,9 +18,8 @@ const CustomerAddresses = () => {
 
 
     useEffect(() => {
-        dispatch(setSelectedCustomerTab(1))
         fetchAddresses(token)
-    }, [token, dispatch])
+    }, [token])
 
     const fetchAddresses = (token) => {
         const url = `${BASE_URL}${API_ENDPOINTS.GET_CUSTOMER_ADDRESSES}`

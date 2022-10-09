@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { selectAccessToken } from '../../store/general/general.selector'
+import { setLastRouteBeforeAuth } from '../../store/general/general.action'
 import { setUserData } from '../../store/user/user.action'
 
 import UserSideBar from '../../components/user/user-side-bar/user-side-bar.component'
@@ -12,6 +13,7 @@ import { BASE_URL, API_ENDPOINTS, generateHeaders } from '../../utils/api-reques
 
 const Customer = () => {
     const navigate = useNavigate()
+    const location = useLocation()
     const dispatch = useDispatch()
     const token = useSelector(selectAccessToken)
 
@@ -19,6 +21,7 @@ const Customer = () => {
         if (token) {
             fetchAuth(token)
         } else {
+            dispatch(setLastRouteBeforeAuth(location.pathname))
             navigate('/login', { replace: true })
         }
     }, [token, dispatch])
@@ -35,6 +38,7 @@ const Customer = () => {
                     dispatch(setUserData(data))
                 })
             } else if (res.status == 403) {
+                dispatch(setLastRouteBeforeAuth(location.pathname))
                 navigate('/login', { replace: true })
             }
         }).catch(err => {

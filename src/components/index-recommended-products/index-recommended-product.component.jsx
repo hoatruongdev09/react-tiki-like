@@ -1,3 +1,4 @@
+import { Col, Container, Row } from 'react-bootstrap'
 import IndexProductItem from '../index-product-item/index-product-item.component'
 const IndexRecommendedProduct = ({ sectionName, products, loadMoreProduct, isLastPage }) => {
     return (
@@ -13,8 +14,10 @@ const IndexRecommendedProduct = ({ sectionName, products, loadMoreProduct, isLas
             </div>
             {
                 isLastPage ? <></> :
-                    <div className='row '>
-                        <button className='btn btn-primary' onClick={loadMoreProduct}>Load More</button>
+                    <div className='row justify-content-center'>
+                        <div className='col-4 d-flex justify-content-center'>
+                            <button className='btn btn-primary' onClick={loadMoreProduct}>Load More</button>
+                        </div>
                     </div>
             }
         </section >

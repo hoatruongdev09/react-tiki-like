@@ -1,6 +1,7 @@
 import parse from 'html-react-parser'
+import { Fragment } from 'react'
 const ProductDetailDescription = ({ product }) => {
-    const { longDescription } = product
+    const { longDescription, specifications } = product
     return (
         <section className="section-name padding-y bg">
             <div className="container">
@@ -12,30 +13,32 @@ const ProductDetailDescription = ({ product }) => {
 
 
                         <h5 className="title-description">Specifications</h5>
+                        {
+                            !specifications && <p>this product has no specifications</p>
+                        }
                         <table className="table table-bordered">
                             <tbody>
-                                <tr><th colSpan="2">Basic specs</th></tr>
-                                <tr><td>Type of energy</td><td>Lava stone</td></tr>
-                                <tr><td>Number of zones</td><td>2</td></tr>
-                                <tr>
-                                    <td>Automatic connection</td>
-                                    <td> <i className="fa fa-check text-success"></i> Yes </td>
-                                </tr>
 
-                                <tr><th colSpan="2">Dimensions</th></tr>
-                                <tr><td>Width</td><td>500mm</td></tr>
-                                <tr><td>Depth</td><td>400mm</td></tr>
-                                <tr><td>Height	</td><td>700mm</td></tr>
+                                {
 
-                                <tr><th colSpan="2">Materials</th></tr>
-                                <tr><td>Exterior</td><td>Stainless steel</td></tr>
-                                <tr><td>Interior</td><td>Iron</td></tr>
-
-                                <tr><th colSpan="2">Connections</th></tr>
-                                <tr><td>Heating Type</td><td>Gas</td></tr>
-                                <tr><td>Connected load gas</td><td>15 Kw</td></tr>
-
-                            </tbody></table>
+                                    specifications && specifications.map((child, index) => (
+                                        <Fragment key={`${child.category}${index}`}>
+                                            <tr>
+                                                <th colSpan="2">{child.category}</th>
+                                            </tr>
+                                            {
+                                                child.specifications.map((spec) => (
+                                                    <tr key={`${child.id}${spec.key}${spec.value}`}>
+                                                        <td>{spec.key}</td>
+                                                        <td>{spec.value}</td>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </Fragment>
+                                    ))
+                                }
+                            </tbody>
+                        </table>
                     </div>
 
                     <aside className="col-md-4">

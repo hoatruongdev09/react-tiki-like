@@ -1,11 +1,12 @@
 import { ReactComponent } from '../../assets/images/logo.svg'
 import { Link } from 'react-router-dom'
+
 const SearchBar = () => {
     return (
         <section className="header-main border-bottom">
             <div className="row row-sm">
                 <div className="col-6 col-sm col-md col-lg  flex-grow-0">
-                    <Link to="http://bootstrap-ecommerce.com" className="brand-wrap">
+                    <Link to="/" className="brand-wrap">
                         <ReactComponent className='logo' />
                     </Link>
                 </div>

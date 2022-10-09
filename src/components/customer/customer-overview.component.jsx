@@ -5,7 +5,6 @@ import { setSelectedCustomerTab } from '../../store/general/general.action'
 import { selectAccessToken } from '../../store/general/general.selector'
 import { BASE_URL, API_ENDPOINTS, generateHeaders } from '../../utils/api-requesting/api-requesting.util'
 const CustomerOverview = () => {
-    const dispatch = useDispatch()
     const userInfo = useSelector(selectUserData)
     const token = useSelector(selectAccessToken)
     const [defaultAddress, setDefaultAddress] = useState(null)
@@ -26,10 +25,6 @@ const CustomerOverview = () => {
             console.error(err)
         })
     }, [token])
-
-    React.useEffect(() => {
-        dispatch(setSelectedCustomerTab(0))
-    }, [dispatch])
 
     return (
         <>
