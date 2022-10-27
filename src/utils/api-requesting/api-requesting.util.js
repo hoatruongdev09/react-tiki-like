@@ -14,14 +14,18 @@ export const API_ENDPOINTS = {
     POST_SET_CUSTOMER_DEFAULT_ADDRESS: '/user/set-default-address/', //set-default-address/:id
     POST_UPDATE_ADDRESS: '/user/update-address/',//update-address/:
     GET_CUSTOMER_DEFAULT_ADDRESS: '/user/default-address',
-    GET_PRODUCTS: '/product/',
+    GET_PRODUCTS: '/product',
+    FILTER_PRODUCTS: '/product/filter',
     GET_PRODUCT_DETAIL: '/product/detail/', //product/detail/:id
     GET_CATEGORY_TREE: '/category/tree/', //category/tree/:id
     GET_ALL_PARENT_CATEGORIES: '/category/get-parent-categories',
+    GET_ALL_CATEGORIES: '/category/get-all-categories',
     GET_PRODUCTS_DETAIL: '/product/details?ids=',// 1,2,3
     POST_PLACE_ORDER: '/order/place-order',
     GET_USER_ORDERS: '/order/user-orders',
-    GET_ORDER_DETAIL: '/order/detail/' // /order/detail/:id
+    GET_ORDER_DETAIL: '/order/detail/', // /order/detail/:id
+    GET_ALL_STORES: '/store/all',
+    GET_ALL_BRANDS: '/brand/all'
 }
 
 export const generateHeaders = (token) => {

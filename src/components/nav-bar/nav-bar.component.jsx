@@ -14,7 +14,7 @@ const MenuBar = () => {
 
     const fetchCategories = () => {
         console.log(`FETCH DATA`)
-        const url = `${BASE_URL}${API_ENDPOINTS.GET_ALL_PARENT_CATEGORIES}`
+        const url = `${BASE_URL}${API_ENDPOINTS.GET_ALL_CATEGORIES}`
         fetch(url, {
             method: 'GET'
         }).then(res => {
@@ -34,8 +34,8 @@ const MenuBar = () => {
             <ul className="navbar-nav flex-wrap">
                 {
                     categories.map(category => (
-                        <li className="nav-item">
-                            <Link className="nav-link" to={`#${category.id}`}>{category.name}</Link>
+                        <li className="nav-item" key={`nav-item-bar-${category.id}`}>
+                            <Link className="nav-link" to={`/${category.name}`}>{category.name}</Link>
                         </li>
                     ))
                 }

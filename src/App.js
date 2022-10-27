@@ -23,6 +23,7 @@ import UserCart from './components/user-cart/user-cart.component';
 import CartPayment from './components/cart-payment/cart-payment.component';
 import CustomerMyOrder from './components/customer/customer-my-order.component';
 import CustomerOrderDetail from './components/customer/customer-order-detail.component';
+import Filter from './components/filter/filter.component';
 
 function App() {
   const accessToken = useSelector(selectAccessToken)
@@ -68,7 +69,7 @@ function App() {
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<SignUp />} />
         <Route path='cart' element={<UserCart />} />
-        <Route path='/cart-payment' element={<CartPayment />} />
+        <Route path='cart-payment' element={<CartPayment />} />
         <Route path='customer' element={<Customer />}>
           <Route index element={<CustomerOverview />} />
           <Route path='settings' element={<CustomerDetail />} />
@@ -76,6 +77,8 @@ function App() {
           <Route path='my-orders' element={<CustomerMyOrder />} />
           <Route path='order-detail/:id' element={<CustomerOrderDetail />} />
         </Route>
+        <Route path='filter' element={<Filter />} />
+        <Route path='/:category' element={<><Filter useCategory={true} /></>} />
       </Route>
     </Routes>
   );
