@@ -532,7 +532,7 @@ const Filter = ({ useCategory = false }) => {
                                                 <div className="rating-wrap mb-2">
                                                     <ul className="rating-stars">
                                                         <li style={{ width: "100%" }} className="stars-active">
-                                                            <ProductStars rate={product.averageRate} />
+                                                            <ProductStars rate={product.rate} />
                                                         </li>
                                                         <li>
                                                             <i className="fa fa-star"></i>
@@ -542,7 +542,7 @@ const Filter = ({ useCategory = false }) => {
                                                             <i className="fa fa-star"></i>
                                                         </li>
                                                     </ul>
-                                                    <div className="label-rating">{product.averageRate == 0 ? 'No review yet' : product.averageRate}</div>
+                                                    <div className="label-rating">{product.rate == 0 ? 'No review yet' : product.rate}</div>
                                                 </div>
 
                                                 <p className="mb-3">
